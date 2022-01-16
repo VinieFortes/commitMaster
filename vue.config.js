@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/commit_master/',
+  publicPath: '/commitMaster/',
   pluginOptions: {
     quasar: {
       importStrategy: 'kebab',
