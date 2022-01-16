@@ -22,8 +22,6 @@ import {Options, Vue} from "vue-class-component";
   components: {FormacoesView, BannerFooter, CursosView, Menu, Banner, PlanosView}
 })
 export default class Home extends Vue{
-  mounted() {
-    document.title = 'Commit Master'
-  }
+
 }
 </script>
