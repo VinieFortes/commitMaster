@@ -18,12 +18,12 @@
     <div v-else class="row">
       <div class="btnWhite">
         <q-btn @click="$router.push('/meus_cursos')" flat >Meus Cursos</q-btn>
-        <q-btn flat >Meu Plano</q-btn>
+        <q-btn flat @click="$router.push('/planos')" >Meu Plano</q-btn>
       </div>
       <div class="vl2"></div>
       <div id="conta" class="row">
         <p id="username">{{ username }}</p>
-        <q-avatar><img :src=userPhoto alt="User">
+        <q-avatar color="primary" size="md">{{username.split(' ').map(name => name[0]).join('').toUpperCase()}}
           <q-menu
               transition-show="jump-down"
               transition-hide="jump-up"
@@ -73,8 +73,7 @@ export default class Header extends Vue{
       this.retrievedObject = localStorage.getItem('cadastro');
       this.cadastroObj = JSON.parse(this.retrievedObject);
 
-      this.username = this.cadastroObj.nome
-      this.userPhoto = this.cadastroObj.link
+      this.username = this.cadastroObj.name
     }
 
   }
@@ -141,15 +140,14 @@ button{
 }
 #conta{
   display: flex;
-  align-items: center;
-  font-size: 14px;
-  font-weight: bolder;
   margin-left: 10px;
   margin-right: 10px;
 }
 #conta p {
   margin-right: 10px;
-  margin-top: 8px;
+  font-size: 14px;
+  font-weight: bolder;
+  margin-top: 6px;
 }
 
 @media only screen and (max-width: 600px) {

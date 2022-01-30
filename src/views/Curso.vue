@@ -17,7 +17,9 @@ import {Options, Vue} from "vue-class-component";
   components: {BannerCurso}
 })
 export default class Curso extends Vue{
-
+  mounted(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 </script>
 

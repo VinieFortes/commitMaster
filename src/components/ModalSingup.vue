@@ -9,46 +9,66 @@
       <q-form
           @submit="onSubmit"
           @reset="onReset"
-          class="q-gutter-md"
       >
-        <q-input
-            filled
-            v-model="name"
-            type="name"
-            label="Seu nome de usuario"
-            lazy-rules
-            color="blue-grey-10"
-            :rules="[ val => val && val.length > 0 || 'O campo de nome não pode ficar em branco !']"
-        />
+        <div class="flex column q-pa-sm">
+          <q-input
+              filled
+              v-model="cadastro.name"
+              type="name"
+              label="Seu nome de usuario"
+              lazy-rules
+              color="blue-grey-10"
+              :rules="[ val => val && val.length > 0 || 'O campo de nome não pode ficar em branco !']"
+          />
+          <q-input
+              filled
+              v-model="cadastro.email"
+              type="email"
+              label="Seu e-mail"
+              lazy-rules
+              color="blue-grey-10"
+              :rules="[ val => val && val.length > 0 || 'O campo de e-mail não pode ficar em branco !']"
+          />
+          <q-input
+              filled
+              v-model="cadastro.date"
+              type="date"
+              label="Data de Nascimento"
+              stack-label
+              lazy-rules
+              color="blue-grey-10"
+              :rules="[ val => val && val.length > 0 || 'O campo de data não pode ficar em branco !']"
+          />
+          <q-input
+              filled
+              v-model="cadastro.cpf"
+              type="text"
+              label="Seu CPF"
+              lazy-rules
+              color="blue-grey-10"
+              :rules="[ val => val && val.length > 0 || 'O campo de CPF não pode ficar em branco !']"
+          />
+          <q-input
+              filled
+              v-model="cadastro.phone"
+              type="tel"
+              label="Seu Telefone"
+              lazy-rules
+              color="blue-grey-10"
+              :rules="[ val => val && val.length > 0 || 'O campo de Telefone não pode ficar em branco !']"
+          />
+          <q-input
+              filled
+              v-model="cadastro.password"
+              type="password"
+              label="Sua senha"
+              lazy-rules
+              color="blue-grey-10"
+              :rules="[ val => val && val.length > 0 || 'O campo de senha não pode ficar em branco !']"
+          />
+        </div>
 
-        <q-input
-            filled
-            v-model="email"
-            type="email"
-            label="Seu e-mail"
-            lazy-rules
-            color="blue-grey-10"
-            :rules="[ val => val && val.length > 0 || 'O campo de e-mail não pode ficar em branco !']"
-        />
-        <q-input
-            filled
-            v-model="password"
-            type="password"
-            label="Sua senha"
-            lazy-rules
-            color="blue-grey-10"
-            :rules="[ val => val && val.length > 0 || 'O campo de senha não pode ficar em branco !']"
-        />
-        <q-input
-            filled
-            v-model="url"
-            type="url"
-            label="Link de uma imagem"
-            lazy-rules
-            color="blue-grey-10"
-            :rules="[ val => val && val.length > 0 || 'O campo de link não pode ficar em branco !']"
-        />
-        <q-checkbox  v-model="checkbox" label="Concordo com todos termos e bla bla" color="blue-grey-10"/>
+        <q-checkbox  v-model="checkbox" label="Concordo com todos termos de serviço" color="blue-grey-10"/>
         <div>
           <q-btn label="Cadastrar" type="submit" color="blue-grey-10"/>
           <q-btn label="Limpar Campos" type="reset" color="blue-grey-10" flat class="q-ml-sm" />
@@ -61,32 +81,60 @@
 <script lang="ts">
 import {Vue} from "vue-class-component";
 import { Emit } from 'vue-property-decorator'
+import axios from 'axios';
 
 export default class ModalSingup extends Vue{
 
-  name = null;
-  email = null;
-  password = null;
-  url = null;
+  cadastro = {
+    name: null,
+    email: null,
+    date: null,
+    password: null,
+    url: null,
+    cpf: null,
+    phone: null,
+  }
+
   checkbox = false;
-  obj = {};
 
   @Emit("close")
   close(){
     return false;
   }
 
+  private axiosInstace = axios.create({
+    baseURL: 'https://localhost:5001/api/v1/'
+  })
+
     onSubmit(){
-      if(this.checkbox === false) {
+      if(!this.checkbox) {
         window.alert("Aceite os termos para se cadastrar !");
       }
       else {
-        this.obj = {nome: this.name, e_mail: this.email, pass: this.password, link: this.url}
-        window.localStorage.setItem ('cadastro', JSON.stringify (this.obj));
+        window.localStorage.setItem ('cadastro', JSON.stringify (this.cadastro));
         window.localStorage.setItem ('login', '1')
         document.location.reload (true);
+        return new Promise(
+            () => {
+              this.axiosInstace.post('/aluno', this.cadastro).then(
+                  () => {
+                    this.cadastro = {
+                      name: null,
+                      email: null,
+                      date: null,
+                      password: null,
+                      url: null,
+                      cpf: null,
+                      phone: null,
+                    };
+                  }
+              )
+            });
       }
 
+  }
+  mounted(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 </script>
@@ -95,8 +143,9 @@ export default class ModalSingup extends Vue{
 #card{
   background-color: white;
   margin: 0 auto;
-  height: 530px;
-  width: 350px;
+  padding: 0 0 10px 0;
+  height: auto;
+  width: 40%;
   border-radius: 12px;
 }
 #header{

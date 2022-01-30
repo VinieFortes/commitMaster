@@ -34,6 +34,10 @@ export default class App extends Vue{
     this.showModalSingup = true
   }
 
+  mounted(){
+    console.log(localStorage.getItem('cadastro'))
+  }
+
 }
 </script>
 

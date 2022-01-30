@@ -56,6 +56,9 @@ export default class  ModalLogin extends Vue{
       window.localStorage.setItem('login', '1')
       document.location.reload(true);
     }
+    mounted(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 }
 </script>
 

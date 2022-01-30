@@ -24,6 +24,7 @@ import {Options, Vue} from "vue-class-component";
 export default class Home extends Vue{
   mounted() {
     document.title = 'Commit Master'
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 </script>

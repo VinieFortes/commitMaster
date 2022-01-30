@@ -2,7 +2,7 @@
   <div id="PlanosView" class="column">
     <p id="title">Conheça Nossos Planos</p>
     <div class="row justify-evenly">
-      <q-card v-for="card in cardsPlanos" v-bind:key="card" id="card" bordered class="shadow-2">
+      <q-card v-for="(card, index) in cardsPlanos" v-bind:key="card" id="card" @click="$router.push({path:'/planos', query:{tab: `card${index+1}`}})" bordered class="shadow-2">
         <q-icon :name=card.icon size="md" color="blue-grey-7"></q-icon>
         <p id="nomePlano">{{card.nome_plano}}</p>
         <p id="desconto">{{ card.desconto }}</p>

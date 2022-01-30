@@ -22,7 +22,7 @@ export default class UserCurso extends Vue{
   mounted() {
     this.retrievedObject = localStorage.getItem('cadastro');
     this.cadastroObj = JSON.parse(this.retrievedObject);
-    this.username = this.cadastroObj.nome;
+    this.username = this.cadastroObj.name;
   }
 }
 </script>

@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Error404 from "@/pages/Error404.vue";
 import Curso from "@/views/Curso.vue";
 import UserCurso from "@/components/UserCurso.vue";
+import Plano from "@/views/Plano.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/meus_cursos',
     name: 'Meus cursos',
     component: UserCurso
+  },
+  {
+    path: '/planos',
+    name: 'Planos',
+    component: Plano
   },
 
   { path: '/:pathMatch(.*)*', component: Error404}

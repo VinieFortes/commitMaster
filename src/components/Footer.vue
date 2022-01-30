@@ -3,7 +3,7 @@
     <div id="menu" class="q-pa-md row justify-between">
 
       <div class="column items-center q-pa-sm">
-        <img src="../assets/logo.png" alt="CommitMaster" width="164">
+        <img src="../assets/logo.png" alt="CommitMaster" style="cursor: pointer" @click="scrollTop()" width="164">
         <p id="slogan" class="q-pa-sm">Desenvolvendo o seu futuro profissional</p>
 
         <div class="row">
@@ -14,7 +14,6 @@
           <a href="#" class="fa fa-instagram"></a>
         </div>
       </div>
-
 
       <q-list padding class="wrap row items-baseline" style="max-height: 500px;">
 
@@ -34,9 +33,9 @@
         <q-item class="column items-center">
           <q-item-label overline style="color: white; font-weight: bold; font-size: 18px; margin-bottom: 10px">NAVEGAÇÃO</q-item-label>
               <router-link to="/"><q-item-label style="color: white; margin-bottom: 5px">Home</q-item-label></router-link>
-              <router-link to="#"><q-item-label style="color: white; margin-bottom: 5px">Sobre</q-item-label></router-link>
+              <router-link to="/sobre"><q-item-label style="color: white; margin-bottom: 5px">Sobre</q-item-label></router-link>
               <router-link to="#"><q-item-label style="color: white; margin-bottom: 5px">Contatos</q-item-label></router-link>
-              <router-link to="#"><q-item-label style="color: white; margin-bottom: 5px">Planos</q-item-label></router-link>
+              <router-link to="/planos"><q-item-label style="color: white; margin-bottom: 5px">Planos</q-item-label></router-link>
               <router-link to="#"><q-item-label style="color: white; margin-bottom: 5px">Cursos</q-item-label></router-link>
               <router-link to="#"><q-item-label style="color: white; margin-bottom: 5px">Formação</q-item-label></router-link>
 
@@ -57,6 +56,10 @@
 import {Vue} from "vue-class-component";
 
 export default class Footer extends Vue{
+
+  scrollTop(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 </script>
 
