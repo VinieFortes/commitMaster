@@ -2,7 +2,7 @@
   <div id="top" class="q-pa-md flex row">
     <div class="q-gutter-md">
       <q-carousel
-          v-model="slide"
+          v-model="card.plano"
           transition-prev="scale"
           transition-next="scale"
           swipeable
@@ -33,7 +33,7 @@
             </q-list>
           </q-card>
         </q-carousel-slide>
-        <q-carousel-slide name="card2">
+        <q-carousel-slide  name="card2">
           <q-card  bordered class="card shadow-2">
             <q-icon :name=cardsPlanos[1].icon size="md" color="blue-grey-7"></q-icon>
             <p class="nomePlano">{{cardsPlanos[1].nome_plano}}</p>
@@ -73,7 +73,7 @@
     </div>
     <div class="column flex">
       <div class="txt text-h5 q-pt-sm">{{username}} escolha o plano que mais se encaixe com você e assine já !</div>
-      <q-card style="border-radius: 12px; width: 400px; align-self: center" class="q-mt-md">
+      <q-card v-if="card.nome" style="border-radius: 12px; width: 400px; align-self: center" class="q-mt-md">
         <q-card-section style="background-color: #263238">
           <div class="row justify-between">
             <img src="../assets/logo.png" width="100" alt="logo">
@@ -98,46 +98,79 @@
             @reset="onReset"
             class="q-gutter-md"
         >
-          <q-input
-              filled
-              v-model="card.nome"
-              label="Nome do Cartão"
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'O campo de nome deve ser preenchido !']"
-          />
+          <div class="row flex">
+            <q-input
+                filled
+                v-model="card.nome"
+                label="Nome do Cartão"
+                lazy-rules
+                style="flex: 1; padding-right: 5px"
+                :rules="[ val => val && val.length > 0 || 'O campo de nome deve ser preenchido !']"
+            />
 
-          <q-input
-              filled
-              v-model="card.cpf"
-              label="CPF"
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'O campo de CPF deve ser preenchido !']"
-          />
+            <q-input
+                filled
+                type="number"
+                v-model="card.cpf"
+                label="CPF"
+                style="flex: 1;"
+                :rules="[ val => val && val.length > 0 || 'O campo de CPF deve ser preenchido !']"
+            />
+          </div>
 
-          <q-input
-              filled
-              v-model="card.cardNumber"
-              label="Numero do Cartão"
-              lazy-rules
-              :rules="[ val => val && val.length > 0 && val.length < 16 || 'O campo de Numero do Cartão deve ser preenchido corretamente !']"
-          />
+          <div class="row flex">
+            <q-input
+                filled
+                v-model="card.cardNumber"
+                type="number"
+                mask="card"
+                label="Numero do Cartão"
+                style="flex: 1; padding-right: 5px"
+                :rules="[ val => val && val.length > 0 && val.length < 17 || 'O campo de Numero do Cartão deve ser preenchido corretamente !']"
+            />
 
-          <q-input
-              filled
-              v-model="card.cvv"
-              label="CVV"
-              lazy-rules
-              :rules="[ val => val && val.length > 0 || 'O campo de CVV deve ser preenchido !']"
-          />
-          <q-input
-              filled
-              v-model="card.data"
-              label="Data de Vencimento"
-              stack-label
-              lazy-rules
-              color="blue-grey-10"
-              :rules="[ val => val && val.length > 0 || 'O campo de data não pode ficar em branco !']"
-          />
+            <q-input
+                filled
+                type="number"
+                v-model="card.cvv"
+                label="CVV"
+                style="flex: 1;"
+                :rules="[ val => val && val.length > 0 && val.length < 4 || 'O campo de CVV deve ser preenchido corretamente !']"
+            />
+          </div>
+
+          <div class="row flex">
+            <q-input
+                filled
+                v-model="card.data"
+                label="Data de Vencimento"
+                stack-label
+                mask="##/##"
+                color="blue-grey-10"
+                style="flex: 1; padding-right: 5px"
+                :rules="[ val => val && val.length > 0 || 'O campo de data não pode ficar em branco !']"
+          >
+              <template v-slot:append>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy ref="monthPicker" transition-show="scale" transition-hide="scale">
+                    <q-date
+                        minimal
+                        mask="MM/YY"
+                        emit-immediately
+                        default-view="Years"
+                        v-model="card.data"
+                    />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+            <q-select
+                filled
+                v-model="card.parcelas"
+                :options="parcelas"
+                style="flex: 1;"
+                label="Numero de parcelas" />
+          </div>
 
           <div>
             <q-btn label="Finalizar pagamento" type="submit" color="primary"/>
@@ -165,16 +198,33 @@ export default class Assinatura extends Vue{
   cadastroObj: any;
   currentPlaceholder = '';
   query: any;
-  slide: any = 'card1';
+  parcelas = ['1x - Á vista', '2x - sem juros', '3x - sem juros','4x - sem juros','5x - sem juros','6x - sem juros','7x - sem juros','8x - sem juros','9x - sem juros','10x - sem juros','11x - sem juros','12x - sem juros',]
 
   card = {
+    plano: 'card1',
     nome: '',
     cpf: '',
     cardNumber: '',
     cvv: '',
-    data: ''
+    data: '',
+    parcelas: '1x - Á vista'
   }
 
+  onSubmit(){
+      window.localStorage.setItem ('plano', JSON.stringify (this.card));
+      document.location.reload (true);
+  }
+  onReset () {
+    this.card = {
+      plano: 'card1',
+      nome: '',
+      cpf: '',
+      cardNumber: '',
+      cvv: '',
+      data: '',
+      parcelas: '1x - Á vista'
+    }
+  }
 
    formatCardNumber(value: string){
     const regex = /^(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})$/g
@@ -183,6 +233,7 @@ export default class Assinatura extends Vue{
         [$1, $2, $3, $4].filter(group => !!group).join(' ')
     )
   }
+
 
   checkTypeCard(cur_val: any){
     const jcb_regex = new RegExp('^(?:2131|1800|35)[0-9]{0,}$');
@@ -221,7 +272,7 @@ export default class Assinatura extends Vue{
 
   mounted() {
     this.query = this.$route.query.tab;
-    if(this.$route.query.tab){this.slide = this.query}
+    if(this.$route.query.tab){this.card.plano = this.query}
     this.retrievedObject = localStorage.getItem('cadastro');
     this.cadastroObj = JSON.parse(this.retrievedObject);
     this.username = this.cadastroObj.name;

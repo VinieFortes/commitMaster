@@ -1,7 +1,7 @@
 <template>
   <q-page-container>
     <AuthVerify v-if="!userLogado"/>
-    <Assinatura v-else/>
+    <Assinatura v-else-if="!userPlano"/>
   </q-page-container>
 </template>
 
@@ -9,9 +9,10 @@
 import {Options, Vue} from "vue-class-component";
 import Assinatura from "@/components/Assinatura.vue";
 import AuthVerify from "@/components/AuthVerify.vue";
+import Conta from "@/views/Conta.vue";
 
 @Options({
-  components: {AuthVerify, Assinatura}
+  components: {Conta, AuthVerify, Assinatura}
 })
 export default class Plano extends Vue{
 
@@ -19,6 +20,7 @@ export default class Plano extends Vue{
   retrievedObject: any;
   cadastroObj: any;
   username = null;
+  userPlano: any = null;
 
   mounted() {
     if(localStorage.getItem('login') === '1'){
@@ -33,8 +35,13 @@ export default class Plano extends Vue{
 
       this.username = this.cadastroObj.name
     }
+    this.userPlano = !!localStorage.getItem('plano');
 
+    if(this.userLogado === true && this.userPlano === true){
+      this.$router.push('/conta')
+    }
   }
+
 }
 </script>
 

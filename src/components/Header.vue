@@ -28,12 +28,9 @@
               transition-show="jump-down"
               transition-hide="jump-up"
           >
-            <q-list style="min-width: 100px">
+            <q-list style="min-width: 150px">
               <q-item clickable>
-                <q-item-section>Minha conta</q-item-section>
-              </q-item>
-              <q-item clickable>
-                <q-item-section>Upgrade no Plano</q-item-section>
+                <q-item-section @click="$router.push('/conta')">Minha conta</q-item-section>
               </q-item>
               <q-separator />
               <q-item clickable>

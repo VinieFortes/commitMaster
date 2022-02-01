@@ -90,7 +90,6 @@ export default class ModalSingup extends Vue{
     email: null,
     date: null,
     password: null,
-    url: null,
     cpf: null,
     phone: null,
   }
@@ -123,7 +122,6 @@ export default class ModalSingup extends Vue{
                       email: null,
                       date: null,
                       password: null,
-                      url: null,
                       cpf: null,
                       phone: null,
                     };
@@ -132,6 +130,17 @@ export default class ModalSingup extends Vue{
             });
       }
 
+  }
+
+  onReset () {
+    this.cadastro = {
+      name: null,
+      email: null,
+      date: null,
+      password: null,
+      cpf: null,
+      phone: null,
+    }
   }
   mounted(){
     window.scrollTo({ top: 0, behavior: 'smooth' });
