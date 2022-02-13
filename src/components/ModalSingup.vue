@@ -42,7 +42,7 @@
           <q-input
               filled
               v-model="cadastro.cpf"
-              type="number"
+              type="text"
               label="Seu CPF"
               lazy-rules
               color="blue-grey-10"
@@ -102,7 +102,7 @@ export default class ModalSingup extends Vue{
   }
 
   private axiosInstace = axios.create({
-    baseURL: 'https://localhost:5011/api/v1/'
+    baseURL: 'https://localhost:5001/api/v1/'
   })
 
     onSubmit(){
@@ -110,8 +110,9 @@ export default class ModalSingup extends Vue{
         window.alert("Aceite os termos para se cadastrar !");
       }
       else {
-        // window.localStorage.setItem ('cadastro', JSON.stringify (this.cadastro));
-        // window.localStorage.setItem ('login', '1')
+        window.localStorage.setItem ('cadastro', JSON.stringify (this.cadastro));
+        window.localStorage.setItem ('login', '1')
+        document.location.reload (true);
         return new Promise(
             () => {
               this.axiosInstace.post('/aluno', this.cadastro).then(

@@ -13,7 +13,7 @@
       >
         <q-input
             filled
-            v-model="login.email"
+            v-model="email"
             type="email"
             label="Seu e-mail"
             lazy-rules
@@ -22,7 +22,7 @@
         />
         <q-input
             filled
-            v-model="login.password"
+            v-model="password"
             type="password"
             label="Sua senha"
             lazy-rules
@@ -41,18 +41,11 @@
 <script lang="ts">
 import {Vue} from "vue-class-component";
 import { Emit } from 'vue-property-decorator'
-import axios from "axios";
 
 export default class  ModalLogin extends Vue{
 
-  private axiosInstace = axios.create({
-    baseURL: 'https://localhost:5011/api/v1/'
-  })
-
-  login = {
-    email: null,
-    password: null
-  }
+    email = null;
+    password = null;
 
     @Emit("close")
     close(){
@@ -61,25 +54,13 @@ export default class  ModalLogin extends Vue{
 
 
     onSubmit(){
-      // window.localStorage.setItem('login', '1')
-      // document.location.reload(true);
-
-      return new Promise(
-          () => {
-            this.axiosInstace.post('/usuario/login', this.login).then(
-                () => {
-                  this.login = {
-                    email: null,
-                    password: null
-                  };
-                }
-            )
-          });
+      window.localStorage.setItem('login', '1')
+      document.location.reload(true);
     }
   onReset () {
-    this.login.email = null;
-    this.login.password = null;
-  }
+    this.email = null;
+    this.password = null;
+    }
 
     mounted(){
       window.scrollTo({ top: 0, behavior: 'smooth' });
