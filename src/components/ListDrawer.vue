@@ -3,7 +3,7 @@
     <q-card id="main">
       <div class="row items-center">
         <router-link to="/"><q-icon size="md" name="arrow_back"></q-icon></router-link>
-        <p id="title">Curso Kotlin Basico</p>
+        <p id="title">{{ query }}</p>
       </div>
 
       <q-card bordered class="shadow-2">
@@ -71,6 +71,12 @@ export default class ListDrawer extends Vue{
   progress2 = 0.9
 
   progressLabel2 = computed(() => (this.progress2 * 100).toFixed() + '%')
+
+  query: any = null;
+
+  mounted(){
+    this.query = this.$route.query.curso;
+  }
 
 }
 </script>
