@@ -13,7 +13,7 @@
         <div class="flex column q-pa-sm">
           <q-input
               filled
-              v-model="cadastro.name"
+              v-model="cadastro.nome"
               type="name"
               label="Seu nome de usuario"
               lazy-rules
@@ -31,7 +31,7 @@
           />
           <q-input
               filled
-              v-model="cadastro.date"
+              v-model="cadastro.dataAniversario"
               type="date"
               label="Data de Nascimento"
               stack-label
@@ -50,7 +50,7 @@
           />
           <q-input
               filled
-              v-model="cadastro.phone"
+              v-model="cadastro.telefone"
               type="tel"
               label="Seu Telefone"
               lazy-rules
@@ -59,7 +59,7 @@
           />
           <q-input
               filled
-              v-model="cadastro.password"
+              v-model="cadastro.senha"
               type="password"
               label="Sua senha"
               lazy-rules
@@ -86,12 +86,12 @@ import axios from 'axios';
 export default class ModalSingup extends Vue{
 
   cadastro = {
-    name: null,
+    nome: null,
     email: null,
-    date: null,
-    password: null,
+    dataAniversario: null,
+    senha: null,
     cpf: null,
-    phone: null,
+    telefone: null,
   }
 
   checkbox = false;
@@ -102,7 +102,7 @@ export default class ModalSingup extends Vue{
   }
 
   private axiosInstace = axios.create({
-    baseURL: 'https://localhost:5001/api/v1/'
+    baseURL: 'https://localhost:5011/api/v1/'
   })
 
     onSubmit(){
@@ -110,20 +110,20 @@ export default class ModalSingup extends Vue{
         window.alert("Aceite os termos para se cadastrar !");
       }
       else {
-        window.localStorage.setItem ('cadastro', JSON.stringify (this.cadastro));
-        window.localStorage.setItem ('login', '1')
-        document.location.reload (true);
+        // window.localStorage.setItem ('cadastro', JSON.stringify (this.cadastro));
+        // window.localStorage.setItem ('login', '1')
+        // document.location.reload (true);
         return new Promise(
             () => {
               this.axiosInstace.post('/aluno', this.cadastro).then(
                   () => {
                     this.cadastro = {
-                      name: null,
+                      nome: null,
                       email: null,
-                      date: null,
-                      password: null,
+                      dataAniversario: null,
+                      senha: null,
                       cpf: null,
-                      phone: null,
+                      telefone: null,
                     };
                   }
               )
@@ -134,12 +134,12 @@ export default class ModalSingup extends Vue{
 
   onReset () {
     this.cadastro = {
-      name: null,
+      nome: null,
       email: null,
-      date: null,
-      password: null,
+      dataAniversario: null,
+      senha: null,
       cpf: null,
-      phone: null,
+      telefone: null,
     }
   }
   mounted(){
