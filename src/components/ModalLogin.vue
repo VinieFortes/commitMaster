@@ -59,6 +59,7 @@ export default class  ModalLogin extends Vue{
       return false;
     }
 
+
     onSubmit(){
       // window.localStorage.setItem('login', '1')
       // document.location.reload(true);
