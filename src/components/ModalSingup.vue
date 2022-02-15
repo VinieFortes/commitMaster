@@ -110,8 +110,8 @@ export default class ModalSingup extends Vue{
         window.alert("Aceite os termos para se cadastrar !");
       }
       else {
-        // window.localStorage.setItem ('cadastro', JSON.stringify (this.cadastro));
-        // window.localStorage.setItem ('login', '1')
+        window.localStorage.setItem ('cadastro', JSON.stringify (this.cadastro));
+        window.localStorage.setItem ('login', '1')
         // document.location.reload (true);
         return new Promise(
             () => {
