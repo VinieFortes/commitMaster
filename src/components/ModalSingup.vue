@@ -112,7 +112,7 @@ export default class ModalSingup extends Vue{
       else {
         window.localStorage.setItem ('cadastro', JSON.stringify (this.cadastro));
         window.localStorage.setItem ('login', '1')
-        // document.location.reload (true);
+
         return new Promise(
             () => {
               this.axiosInstace.post('/aluno', this.cadastro).then(
@@ -128,6 +128,7 @@ export default class ModalSingup extends Vue{
                   }
               )
             });
+        document.location.reload (true);
       }
 
   }

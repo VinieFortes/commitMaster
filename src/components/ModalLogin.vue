@@ -62,7 +62,6 @@ export default class  ModalLogin extends Vue{
 
     onSubmit(){
       window.localStorage.setItem('login', '1')
-      // document.location.reload(true);
       return new Promise(
           () => {
             this.axiosInstace.post('/usuario/login', this.login).then(
@@ -74,6 +73,7 @@ export default class  ModalLogin extends Vue{
                 }
             )
           });
+      document.location.reload(true);
     }
   onReset () {
     this.login.email = null;
