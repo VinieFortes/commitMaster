@@ -2,7 +2,7 @@
   <div id="top" class="q-pa-md flex row">
     <div class="q-gutter-md">
       <q-carousel
-          v-model="objAssinatura.planoId"
+          v-model="card.plano"
           transition-prev="scale"
           transition-next="scale"
           swipeable
@@ -73,22 +73,22 @@
     </div>
     <div class="column flex">
       <div class="txt text-h5 q-pt-sm">{{username}} escolha o plano que mais se encaixe com você e assine já !</div>
-      <q-card v-if="objAssinatura.dadosPagamento.nome" style="border-radius: 12px; width: 400px; align-self: center" class="q-mt-md">
+      <q-card v-if="card.nome" style="border-radius: 12px; width: 400px; align-self: center" class="q-mt-md">
         <q-card-section style="background-color: #263238">
           <div class="row justify-between">
             <img src="../assets/logo.png" width="100" alt="logo">
-            <img v-if="checkTypeCard(objAssinatura.dadosPagamento.numeroCartao) !== 'unknown'" :src="checkTypeCard(objAssinatura.dadosPagamento.numeroCartao)" width="50" alt="card">
+            <img v-if="checkTypeCard(card.cardNumber) !== 'unknown'" :src="checkTypeCard(card.cardNumber)" width="50" alt="card">
           </div>
         </q-card-section>
         <q-card-section style="background-color: #263238">
           <div class="flex flex-center">
-            <p style="font-family: kredit,serif; font-size: 25px; color: white">{{ formatCardNumber(objAssinatura.dadosPagamento.numeroCartao) }}</p>
+            <p style="font-family: kredit,serif; font-size: 25px; color: white">{{ formatCardNumber(card.cardNumber) }}</p>
           </div>
         </q-card-section>
         <q-card-section style="background-color: #263238">
           <div class="flex row justify-between">
-            <p style="font-family: kredit,serif; font-size: 15px; color: white">{{ objAssinatura.dadosPagamento.nome }}</p>
-            <p style="font-family: kredit,serif; font-size: 15px; color: white">{{ objAssinatura.dadosPagamento.dataVencimento }}</p>
+            <p style="font-family: kredit,serif; font-size: 15px; color: white">{{ card.nome }}</p>
+            <p style="font-family: kredit,serif; font-size: 15px; color: white">{{ card.data }}</p>
           </div>
         </q-card-section>
       </q-card>
@@ -101,7 +101,7 @@
           <div class="row flex">
             <q-input
                 filled
-                v-model="objAssinatura.dadosPagamento.nome"
+                v-model="card.nome"
                 label="Nome do Cartão"
                 lazy-rules
                 style="flex: 1; padding-right: 5px"
@@ -111,7 +111,7 @@
             <q-input
                 filled
                 type="number"
-                v-model="objAssinatura.dadosPagamento.cpf"
+                v-model="card.cpf"
                 label="CPF"
                 style="flex: 1;"
                 :rules="[ val => val && val.length > 0 || 'O campo de CPF deve ser preenchido !']"
@@ -121,7 +121,7 @@
           <div class="row flex">
             <q-input
                 filled
-                v-model="objAssinatura.dadosPagamento.numeroCartao"
+                v-model="card.cardNumber"
                 type="number"
                 mask="card"
                 label="Numero do Cartão"
@@ -132,7 +132,7 @@
             <q-input
                 filled
                 type="number"
-                v-model="objAssinatura.dadosPagamento.cvv"
+                v-model="card.cvv"
                 label="CVV"
                 style="flex: 1;"
                 :rules="[ val => val && val.length > 0 && val.length < 4 || 'O campo de CVV deve ser preenchido corretamente !']"
@@ -142,7 +142,7 @@
           <div class="row flex">
             <q-input
                 filled
-                v-model="objAssinatura.dadosPagamento.dataVencimento"
+                v-model="card.data"
                 label="Data de Vencimento"
                 stack-label
                 mask="##/##"
@@ -158,7 +158,7 @@
                         mask="MM/YY"
                         emit-immediately
                         default-view="Years"
-                        v-model="objAssinatura.dadosPagamento.dataVencimento"
+                        v-model="card.data"
                     />
                   </q-popup-proxy>
                 </q-icon>
@@ -166,7 +166,7 @@
             </q-input>
             <q-select
                 filled
-                v-model="objAssinatura.dadosPagamento.numeroParcela"
+                v-model="card.parcelas"
                 :options="parcelas"
                 style="flex: 1;"
                 label="Numero de parcelas" />
@@ -184,21 +184,8 @@
 
 <script lang="ts">
 import {Vue} from "vue-class-component";
-import axios from "axios";
-
 
 export default class Assinatura extends Vue{
-
-  private axiosInstace = axios.create({
-    baseURL: 'https://localhost:5011/api/v1/'
-  })
-
-  token = 'jhfhf'
-
-   config = {
-    headers: { Authorization: `Bearer ${this.token}` }
-  };
-
   cardsPlanos = [
     {icon: "school", nome_plano: "Plano Junior", desconto: "Desconto 10%", parcelas: "12X", preco: "R$85,99", condicao: "à vista"},
     {icon: "lightbulb", nome_plano: "Plano Pleno", desconto: "Desconto 5%", parcelas: "12X", preco: "R$99,99", condicao: "à vista"},
@@ -213,55 +200,29 @@ export default class Assinatura extends Vue{
   query: any;
   parcelas = ['1x - Á vista', '2x - sem juros', '3x - sem juros','4x - sem juros','5x - sem juros','6x - sem juros','7x - sem juros','8x - sem juros','9x - sem juros','10x - sem juros','11x - sem juros','12x - sem juros',]
 
-
-
-  objAssinatura = {
-    planoId: 'card1',
-    dadosPagamento: {
-      nome: '',
-      cpf: '',
-      numeroCartao: '',
-      cvv: '',
-      tipoPagamento: 0,
-      dataVencimento: '',
-      numeroParcela: '1x - Á vista'
-    }
+  card = {
+    plano: 'card1',
+    nome: '',
+    cpf: '',
+    cardNumber: '',
+    cvv: '',
+    data: '',
+    parcelas: '1x - Á vista'
   }
-
-
 
   onSubmit(){
-      window.localStorage.setItem ('plano', JSON.stringify (this.objAssinatura));
-      // document.location.reload (true);
-    return new Promise(
-        () => {
-          this.axiosInstace.post('/api/v1/aluno/assinar', this.objAssinatura, this.config).then(
-              () => {
-                this.objAssinatura = {
-                  planoId: '',
-                  dadosPagamento: {
-                    nome: '',
-                    cpf: '',
-                    numeroCartao: '',
-                    cvv: '',
-                    tipoPagamento: 0,
-                    dataVencimento: '',
-                    numeroParcela: '1x - Á vista'
-                  }
-                }
-              }
-          )
-        });
+      window.localStorage.setItem ('plano', JSON.stringify (this.card));
+      document.location.reload (true);
   }
   onReset () {
-    this.objAssinatura.dadosPagamento = {
+    this.card = {
+      plano: 'card1',
       nome: '',
       cpf: '',
-      numeroCartao: '',
+      cardNumber: '',
       cvv: '',
-      tipoPagamento: 0,
-      dataVencimento: '',
-      numeroParcela: '1x - Á vista'
+      data: '',
+      parcelas: '1x - Á vista'
     }
   }
 
@@ -311,7 +272,7 @@ export default class Assinatura extends Vue{
 
   mounted() {
     this.query = this.$route.query.tab;
-    if(this.$route.query.tab){this.objAssinatura.planoId = this.query}
+    if(this.$route.query.tab){this.card.plano = this.query}
     this.retrievedObject = localStorage.getItem('cadastro');
     this.cadastroObj = JSON.parse(this.retrievedObject);
     this.username = this.cadastroObj.name;

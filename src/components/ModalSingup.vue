@@ -13,7 +13,7 @@
         <div class="flex column q-pa-sm">
           <q-input
               filled
-              v-model="cadastro.nome"
+              v-model="cadastro.name"
               type="name"
               label="Seu nome de usuario"
               lazy-rules
@@ -31,7 +31,7 @@
           />
           <q-input
               filled
-              v-model="cadastro.dataAniversario"
+              v-model="cadastro.date"
               type="date"
               label="Data de Nascimento"
               stack-label
@@ -50,7 +50,7 @@
           />
           <q-input
               filled
-              v-model="cadastro.telefone"
+              v-model="cadastro.phone"
               type="tel"
               label="Seu Telefone"
               lazy-rules
@@ -59,7 +59,7 @@
           />
           <q-input
               filled
-              v-model="cadastro.senha"
+              v-model="cadastro.password"
               type="password"
               label="Sua senha"
               lazy-rules
@@ -86,12 +86,12 @@ import axios from 'axios';
 export default class ModalSingup extends Vue{
 
   cadastro = {
-    nome: null,
+    name: null,
     email: null,
-    dataAniversario: null,
-    senha: null,
+    date: null,
+    password: null,
     cpf: null,
-    telefone: null,
+    phone: null,
   }
 
   checkbox = false;
@@ -102,7 +102,7 @@ export default class ModalSingup extends Vue{
   }
 
   private axiosInstace = axios.create({
-    baseURL: 'https://localhost:5011/api/v1/'
+    baseURL: 'https://localhost:5001/api/v1/'
   })
 
     onSubmit(){
@@ -112,35 +112,34 @@ export default class ModalSingup extends Vue{
       else {
         window.localStorage.setItem ('cadastro', JSON.stringify (this.cadastro));
         window.localStorage.setItem ('login', '1')
-
+        document.location.reload (true);
         return new Promise(
             () => {
               this.axiosInstace.post('/aluno', this.cadastro).then(
                   () => {
                     this.cadastro = {
-                      nome: null,
+                      name: null,
                       email: null,
-                      dataAniversario: null,
-                      senha: null,
+                      date: null,
+                      password: null,
                       cpf: null,
-                      telefone: null,
+                      phone: null,
                     };
                   }
               )
             });
-        document.location.reload (true);
       }
 
   }
 
   onReset () {
     this.cadastro = {
-      nome: null,
+      name: null,
       email: null,
-      dataAniversario: null,
-      senha: null,
+      date: null,
+      password: null,
       cpf: null,
-      telefone: null,
+      phone: null,
     }
   }
   mounted(){
