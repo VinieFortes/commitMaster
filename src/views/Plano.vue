@@ -21,7 +21,6 @@ export default class Plano extends Vue{
   cadastroObj: any;
   username = null;
   userPlano: any = null;
-
   mounted() {
     if(localStorage.getItem('login') === '1'){
       this.userLogado = true;
